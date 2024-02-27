@@ -11,14 +11,13 @@ get_word = response.text
 get_word_cleaned = get_word.strip('[""]')
 i = 0
 
-def valid_input(prompt='Skriv din gissning här: '):
+def valid_input(prompt='Enter your guess: '):
     while True:
         user_input = input(prompt).strip()
 
         if user_input.isdigit() or len(user_input) != 1:
             print('Bad input, try again')
         else:
-            print('good input') 
             return True and user_input
 
 
@@ -35,16 +34,52 @@ def end_game():
         sys.stdout.flush()
         time.sleep(1)
 
+def game_over():
+    clear_console()
+    print(f'Game over, the hidden word was: {get_word_cleaned}')
+    print("   sss     ")
+    print("  (x x)    ")
+    print("o-- O --o  ")
+    print("   / \     ")
+    print("  /   \    ")
 
-""""
 
-print("   sss      ")
-print("  (o o)    ")
-print("o-- O --o  ")
-print("   / \     ")
-print("  /   \    ")
-print(get_word_cleaned)
-"""
+def the_hanged_man(attempts):
+    match attempts:
+        case 1:
+            print("   sss      ")
+        case 2:
+            print("   sss      ")
+            print("  (o o)     ")
+        case 3:
+            print("   sss      ")
+            print("  (o o)     ")
+            print("    O       ")
+        case 4:
+            print("   sss     ")
+            print("  (o o)    ")
+            print("    O      ")
+            print("o-- O      ")
+        case 5:
+            print("   sss     ")
+            print("  (o o)    ")
+            print("    O      ")
+            print("o-- O      ")
+            print("o-- O --o  ")
+        case 6:
+            print("   sss     ")
+            print("  (o o)    ")
+            print("    O      ")
+            print("o-- O      ")
+            print("o-- O --o  ")
+            print("   / \     ")
+        case 7:
+            print("   sss     ")
+            print("  (x x)    ")
+            print("o-- O --o  ")
+            print("   / \     ")
+            print("  /   \    ")
+
 
 
 def hangman():
@@ -54,20 +89,21 @@ def hangman():
     list = ['_'] * len(get_word_cleaned)
     underscore_checker = list.count('_')
 
+    clear_console()
     print('Welcome to Hangman')
     print('The goal of the game is to guess what the hidden word is')
     time.sleep(5)
     clear_console()
 
-    print(get_word_cleaned)
+    #print(get_word_cleaned)
 
 
 
 
 
-    print(f'You have {7-attempts} attempts left')
-    print(f'Number of _ :{underscore_checker}')    
+    print(f'You have {7-attempts} attempts left\n') 
     print(list)
+
 
     while attempts <= 7 and not game_won:
 
@@ -81,28 +117,25 @@ def hangman():
         guess = valid_input()
         user_guesses = [guess]
 
-        if str(guess) in user_guesses:
-            clear_console()
-            print()
-            print('You have already guessed this character')
-
         if str(guess) not in get_word_cleaned:
             print("Wrong guess, try again")
             attempts += 1
+            the_hanged_man(attempts)
+            if str(guess) in user_guesses:
+
+
+                print('You have already guessed this character')
         else:
             char_indices = [index for index, char in enumerate(get_word_cleaned) if char == guess]
 
             for index in char_indices:
                 list[index] = guess
             char_index = get_word_cleaned.index(guess)
-            char_index2 = []
             list[char_index] = guess
-            #print(f'Guess was found at index pos {char_index}')
-
             underscore_checker = list.count('_')
             print(list)
-    print('SLUT :D')
-    clear_console()
+    game_over()
+
 
 
 hangman()
